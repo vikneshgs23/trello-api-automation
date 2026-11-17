@@ -1,0 +1,6 @@
+# Copy this file to config.properties (it is git-ignored) and fill in your own values.
+# Or set environment variables instead: TRELLO_KEY, TRELLO_TOKEN, TRELLO_MEMBER_EMAIL
+trello.key=YOUR_TRELLO_API_KEY
+trello.token=YOUR_TRELLO_API_TOKEN
+# optional: used by Trello_07 (sends a real board invitation). Test is skipped if empty.
+trello.member.email=
