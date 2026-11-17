@@ -1,0 +1,53 @@
+name: API tests
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '30 3 * * *'      # every day at 03:30 UTC (09:00 IST)
+  workflow_dispatch:           # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: api-tests
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Run API tests
+        run: mvn -B test
+        env:
+          TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+          TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+          # TRELLO_MEMBER_EMAIL is deliberately not set, so the invite test is skipped in CI
+
+      - name: Package report for GitHub Pages
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/surefire-reports
+
+  deploy-report:
+    needs: test
+    if: always() && needs.test.result != 'cancelled'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
