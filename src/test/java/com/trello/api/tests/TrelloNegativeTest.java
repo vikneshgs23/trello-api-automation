@@ -3,6 +3,7 @@ package com.trello.api.tests;
 import static io.restassured.RestAssured.given;
 
 import com.trello.api.base.BaseApiTest;
+import com.trello.api.base.RetryAnalyzer;
 import com.trello.api.config.Config;
 import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.Test;
@@ -14,7 +15,7 @@ public class TrelloNegativeTest extends BaseApiTest {
         return given().baseUri(Config.baseUri()).basePath("/1");
     }
 
-    @Test
+   @Test(retryAnalyzer = RetryAnalyzer.class)
     public void invalidToken_returns401() {
         noAuth().queryParam("key", Config.require("trello.key"))
                 .queryParam("token", "invalid-token")
@@ -24,7 +25,7 @@ public class TrelloNegativeTest extends BaseApiTest {
     }
 
     // Trello answers 400 with the text "invalid token" when no key/token is sent at all.
-    @Test
+   @Test(retryAnalyzer = RetryAnalyzer.class)
     public void missingCredentials_returns400() {
         noAuth()
                 .when().get("/members/me")
@@ -33,7 +34,7 @@ public class TrelloNegativeTest extends BaseApiTest {
                 .body(org.hamcrest.Matchers.containsString("invalid token"));
     }
 
-    @Test
+   @Test(retryAnalyzer = RetryAnalyzer.class)
     public void createBoardWithoutName_returns400() {
         given().spec(spec)
                 .when().post("/boards")
@@ -41,7 +42,7 @@ public class TrelloNegativeTest extends BaseApiTest {
                 .statusCode(400);
     }
 
-    @Test
+   @Test(retryAnalyzer = RetryAnalyzer.class)
     public void getUnknownBoard_returns404() {
         given().spec(spec)
                 .when().get("/boards/{id}", "000000000000000000000000")
