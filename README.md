@@ -2,6 +2,11 @@
 
 API test suite for the [Trello REST API](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/), written in Java with REST Assured and TestNG. It covers the main board workflow end to end (board, lists, cards, labels, due dates, comments, archive, delete) plus negative tests for authentication and validation.
 
+[![API tests](https://github.com/vikneshgs23/trello-api-automation/actions/workflows/api-tests.yml/badge.svg)](https://github.com/vikneshgs23/trello-api-automation/actions/workflows/api-tests.yml)
+
+**Live test report:** https://vikneshgs23.github.io/trello-api-automation/emailable-report.html
+(updated by every run; runs automatically every day)
+
 ## Why API tests
 
 This workflow started as a Selenium UI automation project during my QSpiders training. Trello now asks for an email OTP when it sees a fresh browser session, which blocks automated UI login. Testing the same workflow through the REST API is stable, needs no manual login, and runs for anyone with an API key and token.
