@@ -1,5 +1,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Trello API Suite">
+    <listeners>
+        <listener class-name="com.trello.api.base.RetryTransformer"/>
+    </listeners>
     <test name="Trello REST API">
         <classes>
             <class name="com.trello.api.tests.TrelloBoardFlowTest"/>
