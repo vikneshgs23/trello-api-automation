@@ -1,0 +1,5 @@
+target/
+.idea/
+*.iml
+# real credentials, never commit
+src/test/resources/config.properties
